@@ -87,10 +87,7 @@ COPY --from=builder /opt/conda /opt/conda
 COPY --from=builder --chown=1000:1000 /home/tethys/nrds /home/tethys/nrds
 
 COPY --chown=1000:1000 conf/portal_config.yml /config/portal_config.yml
-COPY scripts/entrypoint.sh /usr/local/bin/nrds-entrypoint.sh
-USER root
-RUN chmod +x /usr/local/bin/nrds-entrypoint.sh
-USER 1000
+COPY --chown=1000:1000 scripts/entrypoint.sh /usr/local/bin/nrds-entrypoint.sh
 
 ENV TETHYS_DB_ENGINE=django.db.backends.sqlite3
 ENV TETHYS_PERSIST=/home/tethys/persist
