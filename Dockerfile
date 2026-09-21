@@ -87,6 +87,10 @@ COPY --from=builder /opt/conda /opt/conda
 COPY --from=builder --chown=1000:1000 /home/tethys/nrds /home/tethys/nrds
 
 COPY --chown=1000:1000 conf/portal_config.yml /config/portal_config.yml
+COPY scripts/entrypoint.sh /usr/local/bin/nrds-entrypoint.sh
+USER root
+RUN chmod +x /usr/local/bin/nrds-entrypoint.sh
+USER 1000
 
 ENV TETHYS_DB_ENGINE=django.db.backends.sqlite3
 ENV TETHYS_PERSIST=/home/tethys/persist
@@ -100,4 +104,4 @@ ENV TETHYS_SECRET_KEY=nrds-local-default-override-in-any-shared-deployment
 ENV GUNICORN_TIMEOUT=600
 ENV GUNICORN_GRACEFUL_TIMEOUT=60
 
-CMD ["/usr/local/bin/serve.sh"]
+CMD ["/usr/local/bin/nrds-entrypoint.sh"]
